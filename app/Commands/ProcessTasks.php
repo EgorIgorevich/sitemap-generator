@@ -3,6 +3,7 @@
 use App\Commands\Command;
 
 use App\Models\Task;
+use App\Services\TaskProcessor;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -12,23 +13,18 @@ class ProcessTasks extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		//
-	}
+	private $taskId;
 
-	/**
-	 * @param Task $task
-	 */
-	public function handle(Task $task)
+	public function __construct(Task $task)
 	{
-		$task->status = Task::STATUS_COMPLETED;
-		$task->update();
+		$this->taskId = $task->id;
+	}
+	public function handle(TaskProcessor $taskProcessor)
+	{
+		/** @var Task $task */
+		$task = Task::find($this->taskId);
+		$taskProcessor->process($task);
+		$this->delete();
 	}
 
 }

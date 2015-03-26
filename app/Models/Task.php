@@ -39,7 +39,7 @@ class Task extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['url', 'user_id', 'status', 'filename', 'data', 'html'];
+    protected $fillable = ['key', 'url', 'user_id', 'status', 'filename', 'data', 'html', 'errorReason'];
 
     /**
      * @return bool
@@ -71,12 +71,6 @@ class Task extends BaseModel
     public function isFailed()
     {
         return $this->status == self::STATUS_FAILED;
-    }
-
-    public static function fromUrl($url)
-    {
-        $task = new self();
-        return $task->create(['url' => $url, 'status' => self::STATUS_NEW]);
     }
 
 } 

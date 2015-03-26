@@ -7,6 +7,9 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Site Map Generator</div>
 				<div class="panel-body">
+					@if (!empty($task))
+						@include('site-map.partial.task-status')
+					@endif
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
 							<strong>Whoops!</strong> There were some problems with your input.<br><br>
